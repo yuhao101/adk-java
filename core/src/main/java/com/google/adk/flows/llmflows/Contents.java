@@ -375,6 +375,7 @@ public final class Contents implements RequestProcessor {
               .map(parts -> parts.stream().anyMatch(p -> p.functionCall().isPresent()))
               .orElse(false);
 
+
       if (hasFunctionCalls) {
         Set<Integer> responseEventIndices = new HashSet<>();
         // Iterate through parts again to get function call IDs
@@ -416,6 +417,15 @@ public final class Contents implements RequestProcessor {
           }
         }
       } else {
+        // exclude event which in functionCallIdToResponseEventIndex keys and event content type is FR
+        boolean hasFunctionResponse =
+                partsOptional
+                        .map(parts -> parts.stream().anyMatch(p -> p.functionResponse().isPresent()))
+                        .orElse(false);
+        if (functionCallIdToResponseEventIndex.containsKey(event.id())
+            && hasFunctionResponse) {
+          continue;
+        }
         resultEvents.add(event);
       }
     }

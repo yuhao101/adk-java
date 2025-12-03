@@ -375,7 +375,6 @@ public final class Contents implements RequestProcessor {
               .map(parts -> parts.stream().anyMatch(p -> p.functionCall().isPresent()))
               .orElse(false);
 
-
       if (hasFunctionCalls) {
         Set<Integer> responseEventIndices = new HashSet<>();
         // Iterate through parts again to get function call IDs
